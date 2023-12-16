@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:math';
 
 void main(List<String> args) async {
-  const MAX_CUBES = <String, int>{'red': 12, 'green': 13, 'blue': 14};
+  //const MAX_CUBES = <String, int>{'red': 12, 'green': 13, 'blue': 14};
 
   final input = File(args[0]);
   Stream<String> lines =

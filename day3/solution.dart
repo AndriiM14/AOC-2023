@@ -50,12 +50,9 @@ void main(List<String> args) {
       if (left != -1 && right != -1) {
         final num = int.parse(line.substring(left, right + 1));
         //print('Found number: $num');
-        var isPart = false;
 
         if (left != 0) {
           if (isSymbol(line[left - 1])) {
-            isPart = true;
-
             if (isGear(line[left - 1])) {
               final gear = (lineIdx, left - 1);
               if (gears.containsKey(gear))
@@ -68,8 +65,6 @@ void main(List<String> args) {
 
         if (right != line.length - 1) {
           if (isSymbol(line[right + 1])) {
-            isPart = true;
-
             if (isGear(line[right + 1])) {
               final gear = (lineIdx, right + 1);
               if (gears.containsKey(gear))
@@ -88,7 +83,6 @@ void main(List<String> args) {
               input[lineIdx - 1].substring(left, right + 1), lineIdx - 1, left);
 
           if (contains) {
-            isPart = true;
             if (containsGear) {
               if (gears.containsKey(gearCoordinates))
                 gears[gearCoordinates]?.add(num);
@@ -103,7 +97,6 @@ void main(List<String> args) {
               input[lineIdx + 1].substring(left, right + 1), lineIdx + 1, left);
 
           if (contains) {
-            isPart = true;
             if (containsGear) {
               if (gears.containsKey(gearCoordinates))
                 gears[gearCoordinates]?.add(num);
