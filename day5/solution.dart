@@ -31,7 +31,7 @@ void main(List<String> args) async {
       input.openRead().transform(utf8.decoder).transform(LineSplitter());
 
   try {
-    List<int> state = [];
+    List<int> seeds = [];
     List<Function> mappers = [];
 
     bool collectingRanges = false;
@@ -39,8 +39,12 @@ void main(List<String> args) async {
 
     await for (var line in lines) {
       if (line.contains('seeds')) {
-        state.addAll(
-            line.split(':')[1].trim().split(' ').map((e) => int.parse(e)));
+        seeds = line
+            .split(':')[1]
+            .trim()
+            .split(' ')
+            .map((e) => int.parse(e))
+            .toList();
       }
 
       if (line.isEmpty) {
@@ -62,13 +66,23 @@ void main(List<String> args) async {
       }
     }
 
-    print(state);
-    for (final mapper in mappers) {
-      state = mapper(state);
-      print(state);
+    int result = -1;
+
+    for (int i = 0; i < seeds.length - 1; i += 2) {
+      final start = seeds[i];
+      final length = seeds[i + 1];
+
+      var state = [for (var seed = start; seed < start + length; ++seed) seed];
+
+      for (final map in mappers) state = map(state);
+
+      if (result == -1)
+        result = state.reduce(min);
+      else
+        result = min(result, state.reduce(min));
     }
 
-    print('\nResult: ${state.reduce(min)}');
+    print('\nResult: ${result}');
   } catch (e) {
     print('Oops: $e');
   }
