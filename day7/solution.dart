@@ -1,40 +1,58 @@
 import 'dart:io';
+import 'dart:math';
 
 int findType(String card) {
   var groups = Map<String, int>();
+  var jCount = 0;
 
   for (var char in card.split('')) {
+    if (char == 'J') {
+      ++jCount;
+      continue;
+    }
+
     if (groups.containsKey(char))
       groups[char] = groups[char]! + 1;
     else
       groups[char] = 1;
   }
 
-  var type = groups.keys.length;
+  if (jCount == 5) return 7;
 
-  if (type >= 4) type += 2;
+  var minType = 7;
 
-  if (type == 3) {
-    type = 4;
+  for (final key in groups.keys) {
+    groups[key] = groups[key]! + jCount;
 
-    for (final v in groups.values) {
-      if (v == 2) {
-        type = 5;
-        break;
+    var type = groups.keys.length;
+
+    if (type >= 4) type += 2;
+
+    if (type == 3) {
+      type = 4;
+
+      for (final v in groups.values) {
+        if (v == 2) {
+          type = 5;
+          break;
+        }
       }
     }
-  }
 
-  if (type == 2) {
-    for (final v in groups.values) {
-      if (v == 3) {
-        type = 3;
-        break;
+    if (type == 2) {
+      for (final v in groups.values) {
+        if (v == 3) {
+          type = 3;
+          break;
+        }
       }
     }
+
+    minType = min(minType, type);
+    groups[key] = groups[key]! - jCount;
   }
 
-  return 8 - type;
+  return 8 - minType;
 }
 
 void main(List<String> args) {
@@ -48,7 +66,7 @@ void main(List<String> args) {
     '8': 7,
     '9': 8,
     'T': 9,
-    'J': 10,
+    'J': 0,
     'Q': 11,
     'K': 12,
     'A': 13
