@@ -2,7 +2,6 @@ import 'dart:io';
 
 void main(List<String> args) {
   final input = File(args[0]).readAsLinesSync();
-  int result = 1;
 
   final timeStr = input[0].split(':')[1].trim();
   final distanceStr = input[1].split(':')[1].trim();
@@ -32,9 +31,5 @@ void main(List<String> args) {
     }
 
     print('Found $waysToBeat ways to beat record of $recordDistance');
-
-    result *= waysToBeat;
   }
-
-  print('\nResult: $result');
 }
